@@ -61,7 +61,7 @@ const FarmerDashboard = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b bg-card shadow-sm">
+      <header className="border-b bg-primary/20 shadow-sm">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-bold text-primary">AgriPrice Connect</h1>
