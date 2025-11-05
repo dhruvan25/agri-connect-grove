@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import heroFarm from "@/assets/hero-farm.jpg";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { supabase } from "@/integrations/supabase/client";
+import { ShoppingCart, Sprout } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Sprout, ShoppingCart } from "lucide-react";
-import heroFarm from "@/assets/hero-farm.jpg";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -18,50 +18,102 @@ const Auth = () => {
   const [fullName, setFullName] = useState("");
   const [selectedRole, setSelectedRole] = useState<"farmer" | "buyer">("farmer");
 
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+  // const handleSignUp = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setIsLoading(true);
 
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/`,
-          data: {
-            full_name: fullName,
-          },
+  //   try {
+  //     const { data, error } = await supabase.auth.signUp({
+  //       email,
+  //       password,
+  //       options: {
+  //         emailRedirectTo: `${window.location.origin}/`,
+  //         data: {
+  //           full_name: fullName,
+  //         },
+  //       },
+  //     });
+
+  //     if (error) throw error;
+
+  //     if (data.user) {
+  //       // Create profile
+  //       const { error: profileError } = await supabase.from("profiles").insert({
+  //         user_id: data.user.id,
+  //         full_name: fullName,
+  //       });
+
+  //       if (profileError) throw profileError;
+
+  //       // Assign role
+  //       const { error: roleError } = await supabase.from("user_roles").insert({
+  //         user_id: data.user.id,
+  //         role: selectedRole,
+  //       });
+
+  //       if (roleError) throw roleError;
+
+  //       toast.success("Account created successfully!");
+  //       navigate(selectedRole === "farmer" ? "/farmer" : "/buyer");
+  //     }
+  //   } catch (error: any) {
+  //     toast.error(error.message || "Failed to sign up");
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  // In src/pages/Auth.tsx
+
+const handleSignUp = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsLoading(true);
+
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/`,
+        // Make sure 'full_name' is passed in the 'data' option
+        // The trigger will read this value
+        data: {
+          full_name: fullName,
         },
+      },
+    });
+
+    if (error) throw error;
+
+    // The trigger handles profile and role creation now.
+    // We just need to handle the user_roles insert.
+
+    if (data.user) {
+      // Assign role (This part is still needed)
+      const { error: roleError } = await supabase.from("user_roles").insert({
+        user_id: data.user.id,
+        role: selectedRole,
       });
 
-      if (error) throw error;
+      if (roleError) throw roleError;
 
-      if (data.user) {
-        // Create profile
-        const { error: profileError } = await supabase.from("profiles").insert({
-          user_id: data.user.id,
-          full_name: fullName,
-        });
+      // Because email confirmation is on, we don't navigate.
+      // We just tell them to check their email.
+      toast.success("Account created! Please check your email to confirm.");
 
-        if (profileError) throw profileError;
-
-        // Assign role
-        const { error: roleError } = await supabase.from("user_roles").insert({
-          user_id: data.user.id,
-          role: selectedRole,
-        });
-
-        if (roleError) throw roleError;
-
-        toast.success("Account created successfully!");
-        navigate(selectedRole === "farmer" ? "/farmer" : "/buyer");
-      }
-    } catch (error: any) {
-      toast.error(error.message || "Failed to sign up");
-    } finally {
-      setIsLoading(false);
+      // If you disable email confirmation (Solution 2),
+      // you can uncomment the navigate line:
+      // navigate(selectedRole === "farmer" ? "/farmer" : "/buyer");
     }
-  };
+  } catch (error: unknown) {
+    // Safer error handling without `any` so lint/type checks pass
+    let message = "Failed to sign up";
+    if (error instanceof Error && error.message) message = error.message;
+    toast.error(message);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,8 +140,10 @@ const Auth = () => {
           navigate(roleData.role === "farmer" ? "/farmer" : "/buyer");
         }
       }
-    } catch (error: any) {
-      toast.error(error.message || "Failed to sign in");
+    } catch (error: unknown) {
+      let message = "Failed to sign in";
+      if (error instanceof Error && error.message) message = error.message;
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }
