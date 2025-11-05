@@ -279,7 +279,7 @@ const BuyerDashboard = () => {
 
         {/* Tabs for Marketplace, My Orders, and Profile */}
         <Tabs defaultValue="marketplace" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-3 bg-accent/90 rounded-md p-1">
             <TabsTrigger value="marketplace">Farmer Marketplace</TabsTrigger>
             <TabsTrigger value="orders">My Orders</TabsTrigger>
             <TabsTrigger value="profile">My Profile</TabsTrigger> {/* <-- NEW TAB */}

@@ -132,7 +132,7 @@ const FarmerDashboard = () => {
 
         {/* Tabs */}
         <Tabs defaultValue="prices" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:w-auto">
+          <TabsList className="grid w-full grid-cols-4 bg-accent/90 rounded-md p-1">
             <TabsTrigger value="prices">Mandi Prices</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
             <TabsTrigger value="risk">Risk Advisory</TabsTrigger>
