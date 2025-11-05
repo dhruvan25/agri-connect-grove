@@ -1,6 +1,7 @@
 import Analytics from "@/components/farmer/Analytics";
 import FarmerProfile from "@/components/farmer/FarmerProfile";
 import MandiPrices from "@/components/farmer/MandiPrices";
+import RiskAdvisory from "@/components/farmer/RiskAdvisory";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,8 +16,8 @@ import { toast } from "sonner";
 
 const FarmerDashboard = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState<any>(null);
-  const [profile, setProfile] = useState<any>(null);
+  const [user, setUser] = useState<object | null>(null);
+  const [profile, setProfile] = useState<Record<string, unknown> | null>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -147,15 +148,7 @@ const FarmerDashboard = () => {
           </TabsContent>
 
           <TabsContent value="risk" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Risk Advisory</CardTitle>
-                <CardDescription>Weather alerts and crop risk notifications</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <RiskAdvisory />
-              </CardContent>
-            </Card>
+            <RiskAdvisory />
           </TabsContent>
 
           <TabsContent value="logistics" className="space-y-4">
