@@ -14,16 +14,277 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      crops: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          id: string
+          image_url: string | null
+          name: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+        }
+        Relationships: []
+      }
+      farmer_analytics: {
+        Row: {
+          acreage: number | null
+          created_at: string | null
+          crop_id: string
+          expected_yield: number | null
+          farming_method: string | null
+          harvest_date: string | null
+          id: string
+          is_organic: boolean | null
+          soil_type: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          acreage?: number | null
+          created_at?: string | null
+          crop_id: string
+          expected_yield?: number | null
+          farming_method?: string | null
+          harvest_date?: string | null
+          id?: string
+          is_organic?: boolean | null
+          soil_type?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          acreage?: number | null
+          created_at?: string | null
+          crop_id?: string
+          expected_yield?: number | null
+          farming_method?: string | null
+          harvest_date?: string | null
+          id?: string
+          is_organic?: boolean | null
+          soil_type?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "farmer_analytics_crop_id_fkey"
+            columns: ["crop_id"]
+            isOneToOne: false
+            referencedRelation: "crops"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      favorites: {
+        Row: {
+          created_at: string | null
+          id: string
+          mandi_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          mandi_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          mandi_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favorites_mandi_id_fkey"
+            columns: ["mandi_id"]
+            isOneToOne: false
+            referencedRelation: "mandis"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mandi_prices: {
+        Row: {
+          created_at: string | null
+          crop_id: string
+          date: string | null
+          id: string
+          mandi_id: string
+          price: number
+          unit: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          crop_id: string
+          date?: string | null
+          id?: string
+          mandi_id: string
+          price: number
+          unit?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          crop_id?: string
+          date?: string | null
+          id?: string
+          mandi_id?: string
+          price?: number
+          unit?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mandi_prices_crop_id_fkey"
+            columns: ["crop_id"]
+            isOneToOne: false
+            referencedRelation: "crops"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mandi_prices_mandi_id_fkey"
+            columns: ["mandi_id"]
+            isOneToOne: false
+            referencedRelation: "mandis"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mandis: {
+        Row: {
+          created_at: string | null
+          district: string
+          id: string
+          latitude: number | null
+          location: string
+          longitude: number | null
+          name: string
+          state: string
+        }
+        Insert: {
+          created_at?: string | null
+          district: string
+          id?: string
+          latitude?: number | null
+          location: string
+          longitude?: number | null
+          name: string
+          state: string
+        }
+        Update: {
+          created_at?: string | null
+          district?: string
+          id?: string
+          latitude?: number | null
+          location?: string
+          longitude?: number | null
+          name?: string
+          state?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          business_name: string | null
+          business_verified: boolean | null
+          created_at: string | null
+          district: string | null
+          farm_size: number | null
+          farm_type: string | null
+          full_name: string | null
+          id: string
+          location: string | null
+          phone: string | null
+          state: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          business_name?: string | null
+          business_verified?: boolean | null
+          created_at?: string | null
+          district?: string | null
+          farm_size?: number | null
+          farm_type?: string | null
+          full_name?: string | null
+          id?: string
+          location?: string | null
+          phone?: string | null
+          state?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          business_name?: string | null
+          business_verified?: boolean | null
+          created_at?: string | null
+          district?: string | null
+          farm_size?: number | null
+          farm_type?: string | null
+          full_name?: string | null
+          id?: string
+          location?: string | null
+          phone?: string | null
+          state?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "farmer" | "buyer" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +411,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["farmer", "buyer", "admin"],
+    },
   },
 } as const
